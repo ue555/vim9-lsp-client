@@ -3,6 +3,7 @@
 " License: MIT
 
 let s:setup_done = 0
+let s:vimlsp_registered = 0
 
 " Main setup function
 function! vim9lsp#Setup() abort
@@ -105,7 +106,8 @@ endfunction
 
 " Register server with vim-lsp
 function! s:RegisterVimLsp(server_path) abort
-  if lsp#server#is_server_registered('vim9-lsp-server')
+  " Check if already registered (using script-local flag)
+  if s:vimlsp_registered
     return
   endif
 
@@ -116,6 +118,7 @@ function! s:RegisterVimLsp(server_path) abort
     \ 'workspace_config': {},
     \ })
 
+  let s:vimlsp_registered = 1
   echom 'vim9-lsp-server registered with vim-lsp'
 endfunction
 
