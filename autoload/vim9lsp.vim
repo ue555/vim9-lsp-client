@@ -83,7 +83,6 @@ function! vim9lsp#SetupVim9LSP(server_path) abort
       autocmd VimEnter * call lsp#lsp#AddServer(lspServers)
     augroup END
 
-    echom 'Vim9 LSP: Using built-in LSP client'
   catch
     echohl ErrorMsg
     echom 'Failed to setup Vim9 built-in LSP: ' . v:exception
@@ -108,7 +107,6 @@ function! vim9lsp#SetupVimLsp(server_path) abort
     call s:RegisterVimLsp(s:server_path)
   endif
 
-  echom 'Vim9 LSP: Using vim-lsp client'
 endfunction
 
 " Register server with vim-lsp
@@ -126,7 +124,6 @@ function! s:RegisterVimLsp(server_path) abort
     \ })
 
   let s:vimlsp_registered = 1
-  echom 'vim9-lsp-server registered with vim-lsp'
 endfunction
 
 " Install/Update server using Go setup tool
