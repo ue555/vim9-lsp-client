@@ -4,6 +4,7 @@
 
 let s:setup_done = 0
 let s:vimlsp_registered = 0
+let s:server_path = ''
 
 " Main setup function
 function! vim9lsp#Setup() abort
@@ -73,7 +74,7 @@ function! vim9lsp#SetupVim9LSP(server_path) abort
       name: 'vim9-lsp',
       filetype: ['vim'],
       path: 'node',
-      args: [a:server_path],
+      args: [a:server_path, '--stdio'],
       syncInit: v:true
     }]
 
@@ -96,10 +97,16 @@ function! vim9lsp#SetupVimLsp(server_path) abort
     return
   endif
 
+  let s:server_path = a:server_path
+
   augroup Vim9LSPClient
     autocmd!
-    autocmd User lsp_setup call s:RegisterVimLsp(a:server_path)
+    autocmd User lsp_setup call s:RegisterVimLsp(s:server_path)
   augroup END
+
+  if exists('g:lsp_loaded')
+    call s:RegisterVimLsp(s:server_path)
+  endif
 
   echom 'Vim9 LSP: Using vim-lsp client'
 endfunction
@@ -113,7 +120,7 @@ function! s:RegisterVimLsp(server_path) abort
 
   call lsp#register_server({
     \ 'name': 'vim9-lsp-server',
-    \ 'cmd': {server_info -> ['node', a:server_path]},
+    \ 'cmd': {server_info -> ['node', a:server_path, '--stdio']},
     \ 'allowlist': ['vim'],
     \ 'workspace_config': {},
     \ })

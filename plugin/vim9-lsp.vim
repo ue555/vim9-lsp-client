@@ -25,6 +25,11 @@ augroup Vim9LSPSetup
   endif
 augroup END
 
+" Register before the initial buffer events when vim-lsp is already loaded.
+if g:vim9_lsp_auto_setup && exists('g:lsp_loaded')
+  call vim9lsp#Setup()
+endif
+
 " Command to manually setup the server
 command! Vim9LspSetup call vim9lsp#Setup()
 
